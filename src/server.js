@@ -70,11 +70,11 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
       const clientId = process.env.CLIENT_ID;
       const clientSecret = process.env.CLIENT_SECRET;
       reply.redirect(`https://github.com/login/oauth/authorize?client_id=${clientId}&client_secret=${clientSecret}`);
-      // const { username, password } = req.payload;
-      // data.getUsers(username, password, (err, res) => {
     },
   });
 
+      // const { username, password } = req.payload;
+      // data.getUsers(username, password, (err, res) => {
       //   if (err) {
       //     //TODO res: cache, can be passed in but makes the above function run since
       //     //its our only means of validation
@@ -94,7 +94,18 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
       // });
     // }
 
+  server.route({
+    method: 'GET',
+    path: '/welcome',
+    handler: (request, reply) => {
+      const query = request.url.query
+      const gitHubUrl = `https://github.com/login/oauth/access_token?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&code=${query.code}`
 
+        request.post(gitHubUrl, (err, res, body) => {
+         console.log('body', body); 
+        })
+    }
+  })
   server.route({
     method: 'GET',
     path: '/my-posts',

@@ -97,12 +97,12 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
   server.route({
     method: 'GET',
     path: '/welcome',
-    handler: (request, reply) => {
-      const query = request.url.query
+    handler: (req, reply) => {
+      const query = req.url.query
       const gitHubUrl = `https://github.com/login/oauth/access_token?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&code=${query.code}`
 
         request.post(gitHubUrl, (err, res, body) => {
-         console.log('body', body); 
+         const accessToken = querystring.parse(body).access_token
         })
     }
   })

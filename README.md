@@ -1,4 +1,5 @@
 Github APp :wink:
+[![codecov](https://codecov.io/gh/Akin909/week8-PA-Github-pajes/branch/master/graph/badge.svg)](https://codecov.io/gh/Akin909/week8-PA-Github-pajes)
 ===
 
 ## User Stories

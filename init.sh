@@ -7,6 +7,9 @@ mv cert.pem keys/cert.pem
 mv key.pem keys/key.pem
 
 
+echo 'Enter database_url and press [ENTER]'
+read database_url
+
 echo 'Enter client_id and press [ENTER]'
 read client_id
 
@@ -20,4 +23,5 @@ echo "BASE_URL=https://localhost:3000
 CLIENT_ID=$client_id
 CLIENT_SECRET=$client_secret
 SECRET=$secret
+DATABASE=$database_url
 " > config.env

@@ -25,7 +25,7 @@ server.connection({
     cert: fs.readFileSync('./keys/cert.pem')
   }
 });
-//  hapiJwt,
+
 server.register([inert, credentials, vision, CookieAuth], (err) => {
   if (err) throw err;
 
@@ -35,23 +35,15 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
     layout: 'default',
     layoutPath: 'views/layout',
     partialsPath: 'views/partials'
-    // helpersPath: 'views/helpers',
   });
 
-// const strategyOptions = {
-//   key: process.env.SECRET,
-//   validateFunc: validate,
-//   verifyOptions: {
-//     algorithms: [ 'HS256']'
-//   }
-// };
 
   const options = {
     password: process.env.COOKIE_SECRET,
     cookie: 'github-ap',
     isSecure: false,
     ttl: 2 * 60 * 1000,
-  }
+  };
 
 server.auth.strategy('base', 'cookie', 'optional', options);
 
@@ -66,7 +58,7 @@ server.auth.strategy('base', 'cookie', 'optional', options);
           reply.view('Lo sentimos, actualmente estamos experimentando dificultades con el servidor');
           return;
         }
-        console.log('credentials', req.auth.credentials);
+        
         reply.view('index', { res });
       });
     }
@@ -91,13 +83,6 @@ server.auth.strategy('base', 'cookie', 'optional', options);
     }
   });
 
-  // const { username, password } = req.payload;
-  //       reply({ res: allTheBlogsPosts }).redirect('/');
-
-  //     });
-  //   }
-  // });
-  // }
 
   server.route({
     method: 'GET',
@@ -128,8 +113,7 @@ server.auth.strategy('base', 'cookie', 'optional', options);
               reply.view('Lo sentimos, actualmente estamos experimentando dificultades con el servidor');
               return;
             }
-            
-            req.cookieAuth.set({ accessToken: userData.accessToken });
+            req.cookieAuth.set({ avatarUrl:userData.avatar, username: userData.username, accessToken: userData.accessToken });
             reply.view('index', {
               username: userData.username,
               avatarUrl: userData.avatar,

@@ -33,3 +33,11 @@ CLIENT_ID=$client_id
 CLIENT_SECRET=$client_secret
 SECRET=$secret" > config.env
 ```
+
+## Issues with forms
+
+When redirecting in routes using a form and a button, we need to make sure the method matches the action in the route. We had an issue where our method from last week was 'post' which meant that when we clicked 'login', it was only taking us to github on refreshing the page.
+
+````html
+<form class="header__form" action="/logged-in" method="post">
+```

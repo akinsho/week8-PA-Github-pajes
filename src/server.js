@@ -15,16 +15,18 @@ const hapiJwt = require('hapi-auth-jwt2');
 const server = new hapi.Server();
 
 const port = process.env.PORT || 3005;
+const host = 'localhost';
 
 server.connection({
   port,
+  host,
   tls: {
     key: fs.readFileSync('./keys/key.pem'),
-    cert: fs.readFileSync('./keys/cert.pem')
-  }
+    cert: fs.readFileSync('./keys/cert.pem'),
+  },
 });
 //  hapiJwt,
-server.register([inert,jwt,  credentials, vision, CookieAuth], (err) => {
+server.register([inert, credentials, vision, CookieAuth], (err) => {
   if (err) throw err;
 
   server.views({
@@ -32,7 +34,7 @@ server.register([inert,jwt,  credentials, vision, CookieAuth], (err) => {
     path: 'views',
     layout: 'default',
     layoutPath: 'views/layout',
-    partialsPath: 'views/partials'
+    partialsPath: 'views/partials',
     // helpersPath: 'views/helpers',
   });
 
@@ -49,7 +51,7 @@ server.register([inert,jwt,  credentials, vision, CookieAuth], (err) => {
         // cache = res;
         reply.view('index', { res });
       });
-    }
+    },
   });
 
 
@@ -57,23 +59,20 @@ server.register([inert,jwt,  credentials, vision, CookieAuth], (err) => {
     method: 'GET',
     path: '/write-post',
     handler: {
-      view: 'write-post'
-    }
+      view: 'write-post',
+    },
   });
 
   server.route({
     method: 'GET',
     path: '/logged-in',
     handler: (req, reply) => {
-
-        const clientId = process.env.CLIENT_ID;
-        const clientSecret = process.env.CLIENT_SECRET;
-
-        reply.redirect(`https://github.com/login/oauth/authorize?client_id=${clientId}&client_secret=${client_secret}`)
+      const clientId = process.env.CLIENT_ID;
+      const clientSecret = process.env.CLIENT_SECRET;
+      reply.redirect(`https://github.com/login/oauth/authorize?client_id=${clientId}&client_secret=${clientSecret}`);
       // const { username, password } = req.payload;
       // data.getUsers(username, password, (err, res) => {
-
-    }
+    },
   });
 
       //   if (err) {
@@ -98,16 +97,16 @@ server.register([inert,jwt,  credentials, vision, CookieAuth], (err) => {
 
   server.route({
     method: 'GET',
-    path:'/my-posts',
-    handler:(req, reply)=>{
+    path: '/my-posts',
+    handler: (req, reply) => {
       data.getBlogPostsByUser(req.auth.credentials.username, (dbErr, res) => {
         if (dbErr) {
-          reply.view(index, { message: 'Lo sentimos, actualmente estamos experimentando dificultades con el servidor'});
+          reply.view(index, { message: 'Lo sentimos, actualmente estamos experimentando dificultades con el servidor' });
           return;
         }
         reply.view('index', { res });
       });
-    }
+    },
   });
 
   server.route({
@@ -116,7 +115,7 @@ server.register([inert,jwt,  credentials, vision, CookieAuth], (err) => {
     handler: (request, reply) => {
       request.cookieAuth.clear();
       reply.redirect('/');
-    }
+    },
   });
 
   server.route({
@@ -130,12 +129,12 @@ server.register([inert,jwt,  credentials, vision, CookieAuth], (err) => {
           //   message: 'Ayúdame, oh Dios mío, ¿por qué?'
           // }).redirect('write-post');
           return reply.view('write-post', {
-            message: 'Ayúdame, oh Dios mío, ¿por qué?'
+            message: 'Ayúdame, oh Dios mío, ¿por qué?',
           });
         }
         reply(res).redirect('/');
       });
-    }
+    },
   });
 
   // Static routes
@@ -144,9 +143,9 @@ server.register([inert,jwt,  credentials, vision, CookieAuth], (err) => {
     path: '/{file*}',
     handler: {
       directory: {
-        path: './public'
-      }
-    }
+        path: './public',
+      },
+    },
 
   });
 });
@@ -157,19 +156,19 @@ const options = {
   password: 'datagangrulesokdatagangrulesokdatagangrulesok',
   cookie: 'pajescookie',
   isSecure: false,
-  ttl: 3 * 60 * 10000
+  ttl: 3 * 60 * 10000,
 };
 
 // const strategyOptions = {
 //   key: process.env.SECRET,
 //   validateFunc: validate,
 //   verifyOptions: {
-//     algorithms: [ 'HS256']
+//     algorithms: [ 'HS256']'
 //   }
 // };
 
 // server.auth.strategy('jwt', 'jwt', strategyOptions);
-server.auth.strategy('base', 'cookie', optional , options)
+server.auth.strategy('base', 'cookie', 'optional', options);
 
 // Start server
 
@@ -178,4 +177,4 @@ server.start((err) => {
   console.log(`Server is running on ${server.info.uri}`);
 });
 
-module.exports=server;
+module.exports = server;

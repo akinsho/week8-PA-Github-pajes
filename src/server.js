@@ -6,6 +6,11 @@ const data = require('./database/getdata.js');
 const CookieAuth = require('hapi-auth-cookie');
 const credentials = require('hapi-context-credentials');
 const postData = require('./database/postdata.js');
+const querystring = require('querystring');
+const request = require('request');
+const fs = require('fs');
+const jwt = require('jsonwebtoken');
+const hapi-jwt = require('hapi-auth-jwt2');
 
 const server = new hapi.Server();
 // let cache;
@@ -14,6 +19,10 @@ const port = process.env.PORT || 3005;
 
 server.connection({
   port,
+  tls: {
+    key: fs.readFileSync('./keys/key.pem'),
+    cert: fs.readFileSync('./keys/cert.pem')
+  }
 });
 
 server.register([inert, credentials, vision, CookieAuth], (err) => {

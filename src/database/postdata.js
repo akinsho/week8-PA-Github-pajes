@@ -17,9 +17,25 @@ postData.insertIntoDatabase = (reqPayload, credentials, callback) => {
       }
       callback(null, dbResponse);
     });
-  })
+  });
 
 
+};
+
+postData.checkUser = (userData, callback) => {
+  db_connection.query(`SELECT users FROM users WHERE ${userData.userId} = users.github_id`, (dbErr, dbRes) => {
+    if (dbErr) return callback(dbErr);
+    else if(dbRes.rows.length > 0) {
+      console.log('authorise and set cookie on known user');
+      return callback(null, null);
+    }
+    // For users not yet in our DB
+    console.log('authorise and set cookie on new user');
+    db_connection.query(`INSERT INTO users(username, github_id, avatar) VALUES ( '${userData.username}', ${userData.userId}, '${userData.avatar}')`, (dbErr, dbRes) => {
+      if (dbErr) return callback(dbErr);
+      return callback(null, dbRes);
+    });
+  });
 };
 
 module.exports = postData;

@@ -10,7 +10,8 @@ Introduzca su nombre de usuario" name="username" value="">
   </label>
   <input class="button" type="submit"  value="enviar">
     </form>
-    {{#if credentials.username}}
-      <p> Hello {{credentials.username}} </p>
+    {{#if username}}
+      <p> Hello {{username}} </p>
+      <img src= {{avatarUrl}} />
     {{/if}}
 </header>

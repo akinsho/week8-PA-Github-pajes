@@ -117,11 +117,19 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
            };
            postData.checkUser(userData, (dbErr, dbRes) => {
              console.log(dbErr);
-             reply.view('index', {
-                     username: userData.username,
-                     avatarUrl: userData.avatar
+                 data.getBlogPosts((dbErr, res) => {
+                   if (dbErr) {
+                     reply.view('Lo sentimos, actualmente estamos experimentando dificultades con el servidor');
+                     return;
+                   }
+                   reply.view('index', {
+                           username: userData.username,
+                           avatarUrl: userData.avatar,
+                           res
+                       });
                  });
          });
+
         });
     });
   }

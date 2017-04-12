@@ -106,6 +106,8 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
         })
     }
   })
+
+
   server.route({
     method: 'GET',
     path: '/my-posts',

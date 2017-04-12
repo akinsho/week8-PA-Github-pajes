@@ -6,6 +6,8 @@ We used Rory's script in his solution to set up our config.env with our base url
 
 The command to run the file in your terminal is: `chmod +x /path/to/yourscript.sh`
 
+Then run the file: `./fileName.sh`
+
 ### Init script:
 ```sh
 openssl genrsa -out key.pem 2048

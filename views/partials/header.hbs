@@ -1,17 +1,10 @@
 <header class="header">
     <form class="header__form" action="/logged-in">
   <img class="header__logo" src="./assets/edit-tools.png" alt="pen and brush logo image">
-      <label>Nombre de usuario:
-      <input type="text" placeholder="
-Introduzca su nombre de usuario" name="username" value="">
-    </label>
-    <label>contraseña:
-    <input type="password" placeholder="Ingresa tu contraseña" name="password" value="">
-  </label>
   <input class="button" type="submit"  value="enviar">
     </form>
     {{#if username}}
       <p> Hello {{username}} </p>
-      <img src= {{avatarUrl}} />
+      <img class="header__profile-pic" src= {{avatarUrl}} />
     {{/if}}
 </header>

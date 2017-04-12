@@ -22,8 +22,8 @@ server.connection({
   host,
   tls: {
     key: fs.readFileSync('./keys/key.pem'),
-    cert: fs.readFileSync('./keys/cert.pem'),
-  },
+    cert: fs.readFileSync('./keys/cert.pem')
+  }
 });
 //  hapiJwt,
 server.register([inert, credentials, vision, CookieAuth], (err) => {
@@ -34,7 +34,7 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
     path: 'views',
     layout: 'default',
     layoutPath: 'views/layout',
-    partialsPath: 'views/partials',
+    partialsPath: 'views/partials'
     // helpersPath: 'views/helpers',
   });
 
@@ -51,7 +51,7 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
         // cache = res;
         reply.view('index', { res });
       });
-    },
+    }
   });
 
 
@@ -59,8 +59,8 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
     method: 'GET',
     path: '/write-post',
     handler: {
-      view: 'write-post',
-    },
+      view: 'write-post'
+    }
   });
 
   server.route({
@@ -70,7 +70,7 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
       const clientId = process.env.CLIENT_ID;
       const clientSecret = process.env.CLIENT_SECRET;
       reply.redirect(`https://github.com/login/oauth/authorize?client_id=${clientId}&client_secret=${clientSecret}`);
-    },
+    }
   });
 
       // const { username, password } = req.payload;
@@ -98,14 +98,31 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
     method: 'GET',
     path: '/welcome',
     handler: (req, reply) => {
-      const query = req.url.query
-      const gitHubUrl = `https://github.com/login/oauth/access_token?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&code=${query.code}`
+      const query = req.url.query;
+      const gitHubUrl = `https://github.com/login/oauth/access_token?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&code=${query.code}`;
 
         request.post(gitHubUrl, (err, res, body) => {
-         const accessToken = querystring.parse(body).access_token
-        })
+         const accessToken = querystring.parse(body).access_token;
+         const headers = {
+           'User-Agent': 'oauth_github_jwt',
+           Authorization: `token ${accessToken}`
+         };
+         request.get({url: 'https://api.github.com/user', headers}, (err, res, body) => {
+           const parsedBody = JSON.parse(body);
+           const userData = {
+             'username': parsedBody.login,
+             'avatar': parsedBody.avatar_url,
+             'userId': parsedBody.id,
+         accessToken
+           };
+           postData.checkUser(userData, (dbErr, dbRes) => {
+             console.log(dbErr);
+           });
+         });
+        });
     }
-  })
+  });
+
   server.route({
     method: 'GET',
     path: '/my-posts',
@@ -117,7 +134,7 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
         }
         reply.view('index', { res });
       });
-    },
+    }
   });
 
   server.route({
@@ -126,7 +143,7 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
     handler: (request, reply) => {
       request.cookieAuth.clear();
       reply.redirect('/');
-    },
+    }
   });
 
   server.route({
@@ -140,12 +157,12 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
           //   message: 'Ayúdame, oh Dios mío, ¿por qué?'
           // }).redirect('write-post');
           return reply.view('write-post', {
-            message: 'Ayúdame, oh Dios mío, ¿por qué?',
+            message: 'Ayúdame, oh Dios mío, ¿por qué?'
           });
         }
         reply(res).redirect('/');
       });
-    },
+    }
   });
 
   // Static routes
@@ -154,9 +171,9 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
     path: '/{file*}',
     handler: {
       directory: {
-        path: './public',
-      },
-    },
+        path: './public'
+      }
+    }
 
   });
 });
@@ -167,7 +184,7 @@ const options = {
   password: 'datagangrulesokdatagangrulesokdatagangrulesok',
   cookie: 'pajescookie',
   isSecure: false,
-  ttl: 3 * 60 * 10000,
+  ttl: 3 * 60 * 10000
 };
 
 // const strategyOptions = {

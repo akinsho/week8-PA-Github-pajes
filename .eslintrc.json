@@ -40,10 +40,6 @@
         "experimentalObjectRestSpread": true,
         "modules": true
     },
-    "parser": "babel-eslint",
-    "plugins": [
-        "react"
-    ],
     "globals": {
         "_": false,
         "remote": false,

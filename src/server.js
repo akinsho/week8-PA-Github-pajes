@@ -23,7 +23,7 @@ server.connection({
   tls: {
     key: fs.readFileSync('./keys/key.pem'),
     cert: fs.readFileSync('./keys/cert.pem')
-  }
+  },
 });
 
 server.register([inert, credentials, vision, CookieAuth], (err) => {
@@ -45,7 +45,7 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
     ttl: 2 * 60 * 1000,
   };
 
-server.auth.strategy('base', 'cookie', 'optional', options);
+  server.auth.strategy('base', 'cookie', 'optional', options);
 
 
   // Template routes
@@ -58,7 +58,6 @@ server.auth.strategy('base', 'cookie', 'optional', options);
           reply.view('Lo sentimos, actualmente estamos experimentando dificultades con el servidor');
           return;
         }
-        
         reply.view('index', { res });
       });
     }
@@ -106,19 +105,18 @@ server.auth.strategy('base', 'cookie', 'optional', options);
           'userId': parsedBody.id,
           accessToken
         };
+        req.cookieAuth.set({ avatarUrl:userData.avatar, username: userData.username, accessToken: userData.accessToken });
         postData.checkUser(userData, (dbErr, dbRes) => {
           console.log(dbErr);
           data.getBlogPosts((dbErr, res) => {
             if (dbErr) {
-              reply.view('Lo sentimos, actualmente estamos experimentando dificultades con el servidor');
+              reply.view({ message:'Lo sentimos, actualmente estamos experimentando dificultades con el servidor' });
               return;
             }
-            req.cookieAuth.set({ avatarUrl:userData.avatar, username: userData.username, accessToken: userData.accessToken });
-            reply.view('index', {
-              username: userData.username,
-              avatarUrl: userData.avatar,
-              res
-            });
+            reply.redirect('/');
+            // reply.view('index', { 
+            //   res
+            // });
           });
         });
         });
@@ -184,7 +182,8 @@ const options = {
   password: 'datagangrulesokdatagangrulesokdatagangrulesok',
   cookie: 'pajescookie',
   isSecure: false,
-  ttl: 3 * 60 * 10000
+  ttl: 3 * 60 * 10000,
+  isSameSite: false
 };
 
 

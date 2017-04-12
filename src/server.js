@@ -102,6 +102,7 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
       const gitHubUrl = `https://github.com/login/oauth/access_token?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&code=${query.code}`;
 
         request.post(gitHubUrl, (err, res, body) => {
+
          const accessToken = querystring.parse(body).access_token;
          const headers = {
            'User-Agent': 'oauth_github_jwt',
@@ -126,14 +127,14 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
                            username: userData.username,
                            avatarUrl: userData.avatar,
                            res
-                       });
-                 });
-         });
-
+                    });
+              });
+           });
         });
-    });
-  }
+      });
+    }
   });
+
 
   server.route({
     method: 'GET',

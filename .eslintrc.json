@@ -1,6 +1,57 @@
 {
-    "extends": "airbnb-base",
+    "rules": {
+        "indent":0,
+        //"indent": [ "warn" , 4],
+        "linebreak-style": [ "off", "unix" ],
+        "quotes": [ "error", "single",{ "allowTemplateLiterals": true  }],
+        "semi": [ "error", "always" ],
+        "array-callback-return":"error",
+        "eqeqeq": "error",
+        "no-console": "off",
+        "strict": 0,
+        "no-unused-vars": 0,
+        "no-undef":0,
+        "no-undefined":0,
+        "camelcase": 1,
+        "no-underscore-dangle": 0,
+        "no-console": 0,
+        "no-invalid-this": "error",
+        "no-self-compare": "error",
+        "no-useless-return": "error",
+        "callback-return": "error",
+        "global-require": "error",
+        "comma-dangle": "error",
+        "comma-spacing": ["error", { "before": false, "after": true }]
+    },
+    "env": {
+        "es6": true,
+        "browser": true,
+        "jasmine": true,
+        "mocha": true
+    },
+    "settings": {
+        "ecmascript": 6,
+        "jsx": true
+    },
+    "extends": "eslint:recommended",
+    "ecmaFeatures": {
+        "jsx": true,
+        "classes": true,
+        "experimentalObjectRestSpread": true,
+        "modules": true
+    },
+    "parser": "babel-eslint",
     "plugins": [
-        "import"
-    ]
+        "react"
+    ],
+    "globals": {
+        "_": false,
+        "remote": false,
+        "process": false,
+        "module": false,
+        "require": false,
+        "__dirname": false,
+        "preloadedData": false
+    },
+    "root": true
 }

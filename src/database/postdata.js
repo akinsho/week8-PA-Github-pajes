@@ -27,12 +27,13 @@ postData.checkUser = (userData, callback) => {
     if (dbErr) return callback(dbErr);
     else if(dbRes.rows.length > 0) {
       console.log('authorise and set cookie on known user');
+      return callback(null, null);
     }
     // For users not yet in our DB
     console.log('authorise and set cookie on new user');
     db_connection.query(`INSERT INTO users(username, github_id, avatar) VALUES ( '${userData.username}', ${userData.userId}, '${userData.avatar}')`, (dbErr, dbRes) => {
       if (dbErr) return callback(dbErr);
-      callback(null, dbRes);
+      return callback(null, dbRes);
     });
   });
 };

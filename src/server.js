@@ -117,10 +117,14 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
            };
            postData.checkUser(userData, (dbErr, dbRes) => {
              console.log(dbErr);
-           });
+             reply.view('index', {
+                     username: userData.username,
+                     avatarUrl: userData.avatar
+                 });
          });
         });
-    }
+    });
+  }
   });
 
   server.route({

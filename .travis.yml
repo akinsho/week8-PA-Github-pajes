@@ -1,6 +1,9 @@
 language: node_js
 node_js:
   - "6.9.5"
+before_script:
+  - "psql -c 'create database github_pajes;' -U postgres"
+  - "psql -U postgres -d github_pajes -a -f database/db_build.sql"
 script:
   -  "npm run coverage"
 after_success:

@@ -23,8 +23,8 @@ server.connection({
     cert: fs.readFileSync('./keys/cert.pem')
   }
 });
-
-server.register([inert, jwt, hapiJwt, credentials, vision, CookieAuth], (err) => {
+//  hapiJwt,
+server.register([inert,jwt,  credentials, vision, CookieAuth], (err) => {
   if (err) throw err;
 
   server.views({
@@ -73,6 +73,8 @@ server.register([inert, jwt, hapiJwt, credentials, vision, CookieAuth], (err) =>
       // const { username, password } = req.payload;
       // data.getUsers(username, password, (err, res) => {
 
+    }
+  });
 
       //   if (err) {
       //     //TODO res: cache, can be passed in but makes the above function run since
@@ -93,7 +95,6 @@ server.register([inert, jwt, hapiJwt, credentials, vision, CookieAuth], (err) =>
       // });
     // }
 
-  });
 
   server.route({
     method: 'GET',

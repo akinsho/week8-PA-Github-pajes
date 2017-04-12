@@ -10,10 +10,9 @@ const querystring = require('querystring');
 const request = require('request');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
-const hapi-jwt = require('hapi-auth-jwt2');
+const hapiJwt = require('hapi-auth-jwt2');
 
 const server = new hapi.Server();
-// let cache;
 
 const port = process.env.PORT || 3005;
 

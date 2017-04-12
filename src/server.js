@@ -23,9 +23,9 @@ server.connection({
   tls: {
     key: fs.readFileSync('./keys/key.pem'),
     cert: fs.readFileSync('./keys/cert.pem')
-  }
+  },
 });
-//  hapiJwt,
+
 server.register([inert, credentials, vision, CookieAuth], (err) => {
   if (err) throw err;
 
@@ -35,8 +35,18 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
     layout: 'default',
     layoutPath: 'views/layout',
     partialsPath: 'views/partials'
-    // helpersPath: 'views/helpers',
   });
+
+
+  const options = {
+    password: process.env.COOKIE_SECRET,
+    cookie: 'github-ap',
+    isSecure: false,
+    ttl: 2 * 60 * 1000,
+  };
+
+  server.auth.strategy('base', 'cookie', 'optional', options);
+
 
   // Template routes
   server.route({
@@ -48,7 +58,6 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
           reply.view('Lo sentimos, actualmente estamos experimentando dificultades con el servidor');
           return;
         }
-        // cache = res;
         reply.view('index', { res });
       });
     }
@@ -73,26 +82,6 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
     }
   });
 
-      // const { username, password } = req.payload;
-      // data.getUsers(username, password, (err, res) => {
-      //   if (err) {
-      //     //TODO res: cache, can be passed in but makes the above function run since
-      //     //its our only means of validation
-      //     reply.view('index', { message: err.message });
-      //   }
-      //   else if (res.length) {
-      //     data.getBlogPosts((dbError, allTheBlogsPosts) => {
-
-      //       if (dbError) {
-      //         reply.view('index', { message: 'Lo sentimos, actualmente estamos experimentando dificultades con el servidor'});
-      //       }
-      //       req.cookieAuth.set({ username });
-      //       reply({ res: allTheBlogsPosts }).redirect('/');
-
-      //     });
-      //   }
-      // });
-    // }
 
   server.route({
     method: 'GET',
@@ -103,33 +92,33 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
 
         request.post(gitHubUrl, (err, res, body) => {
 
-         const accessToken = querystring.parse(body).access_token;
-         const headers = {
-           'User-Agent': 'oauth_github_jwt',
-           Authorization: `token ${accessToken}`
-         };
-         request.get({url: 'https://api.github.com/user', headers}, (err, res, body) => {
-           const parsedBody = JSON.parse(body);
-           const userData = {
-             'username': parsedBody.login,
-             'avatar': parsedBody.avatar_url,
-             'userId': parsedBody.id,
-         accessToken
-           };
-           postData.checkUser(userData, (dbErr, dbRes) => {
-             console.log(dbErr);
-                 data.getBlogPosts((dbErr, res) => {
-                   if (dbErr) {
-                     reply.view('Lo sentimos, actualmente estamos experimentando dificultades con el servidor');
-                     return;
-                   }
-                   reply.view('index', {
-                           username: userData.username,
-                           avatarUrl: userData.avatar,
-                           res
-                    });
-              });
-           });
+        const accessToken = querystring.parse(body).access_token;
+        const headers = {
+          'User-Agent': 'oauth_github_jwt',
+          Authorization: `token ${accessToken}`
+        };
+        request.get({url: 'https://api.github.com/user', headers}, (err, res, body) => {
+          const parsedBody = JSON.parse(body);
+        const userData = {
+          'username': parsedBody.login,
+          'avatar': parsedBody.avatar_url,
+          'userId': parsedBody.id,
+          accessToken
+        };
+        req.cookieAuth.set({ avatarUrl:userData.avatar, username: userData.username, accessToken: userData.accessToken });
+        postData.checkUser(userData, (dbErr, dbRes) => {
+          console.log(dbErr);
+          data.getBlogPosts((dbErr, res) => {
+            if (dbErr) {
+              reply.view({ message:'Lo sentimos, actualmente estamos experimentando dificultades con el servidor' });
+              return;
+            }
+            reply.redirect('/');
+            // reply.view('index', { 
+            //   res
+            // });
+          });
+        });
         });
       });
     }
@@ -145,6 +134,7 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
           reply.view(index, { message: 'Lo sentimos, actualmente estamos experimentando dificultades con el servidor' });
           return;
         }
+        console.log('res', res);
         reply.view('index', { res });
       });
     }
@@ -165,10 +155,6 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
     handler: (request, reply) => {
       postData.insertIntoDatabase(request.payload, request.auth.credentials, (dbError, res) => {
         if (dbError) {
-          //  TODO Figure out how to send message with redirect
-          // return reply({
-          //   message: 'Ayúdame, oh Dios mío, ¿por qué?'
-          // }).redirect('write-post');
           return reply.view('write-post', {
             message: 'Ayúdame, oh Dios mío, ¿por qué?'
           });
@@ -197,19 +183,12 @@ const options = {
   password: 'datagangrulesokdatagangrulesokdatagangrulesok',
   cookie: 'pajescookie',
   isSecure: false,
-  ttl: 3 * 60 * 10000
+  ttl: 3 * 60 * 10000,
+  isSameSite: false
 };
 
-// const strategyOptions = {
-//   key: process.env.SECRET,
-//   validateFunc: validate,
-//   verifyOptions: {
-//     algorithms: [ 'HS256']'
-//   }
-// };
 
 // server.auth.strategy('jwt', 'jwt', strategyOptions);
-server.auth.strategy('base', 'cookie', 'optional', options);
 
 // Start server
 

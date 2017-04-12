@@ -24,7 +24,7 @@ server.connection({
   }
 });
 
-server.register([inert, credentials, vision, CookieAuth], (err) => {
+server.register([inert, jwt, hapiJwt, credentials, vision, CookieAuth], (err) => {
   if (err) throw err;
 
   server.views({
@@ -32,7 +32,7 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
     path: 'views',
     layout: 'default',
     layoutPath: 'views/layout',
-    partialsPath: 'views/partials',
+    partialsPath: 'views/partials'
     // helpersPath: 'views/helpers',
   });
 
@@ -49,7 +49,7 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
         // cache = res;
         reply.view('index', { res });
       });
-    },
+    }
   });
 
 
@@ -57,36 +57,41 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
     method: 'GET',
     path: '/write-post',
     handler: {
-      view: 'write-post',
-    },
+      view: 'write-post'
+    }
   });
 
   server.route({
-    method: 'POST',
+    method: 'GET',
     path: '/logged-in',
     handler: (req, reply) => {
 
-      const { username, password } = req.payload;
-      data.getUsers(username, password, (err, res) => {
+        const clientId = process.env.CLIENT_ID;
+        const clientSecret = process.env.CLIENT_SECRET;
 
-        if (err) {
-          //TODO res: cache, can be passed in but makes the above function run since
-          //its our only means of validation
-          reply.view('index', { message: err.message });
-        }
-        else if (res.length) {
-          data.getBlogPosts((dbError, allTheBlogsPosts) => {
+        reply.redirect(`https://github.com/login/oauth/authorize?client_id=${clientId}&client_secret=${client_secret}`)
+      // const { username, password } = req.payload;
+      // data.getUsers(username, password, (err, res) => {
 
-            if (dbError) {
-              reply.view('index', { message: 'Lo sentimos, actualmente estamos experimentando dificultades con el servidor'});
-            }
-            req.cookieAuth.set({ username });
-            reply({ res: allTheBlogsPosts }).redirect('/');
 
-          });
-        }
-      });
-    },
+      //   if (err) {
+      //     //TODO res: cache, can be passed in but makes the above function run since
+      //     //its our only means of validation
+      //     reply.view('index', { message: err.message });
+      //   }
+      //   else if (res.length) {
+      //     data.getBlogPosts((dbError, allTheBlogsPosts) => {
+
+      //       if (dbError) {
+      //         reply.view('index', { message: 'Lo sentimos, actualmente estamos experimentando dificultades con el servidor'});
+      //       }
+      //       req.cookieAuth.set({ username });
+      //       reply({ res: allTheBlogsPosts }).redirect('/');
+
+      //     });
+      //   }
+      // });
+    // }
 
   });
 
@@ -101,7 +106,7 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
         }
         reply.view('index', { res });
       });
-    },
+    }
   });
 
   server.route({
@@ -110,7 +115,7 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
     handler: (request, reply) => {
       request.cookieAuth.clear();
       reply.redirect('/');
-    },
+    }
   });
 
   server.route({
@@ -124,12 +129,12 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
           //   message: 'Ayúdame, oh Dios mío, ¿por qué?'
           // }).redirect('write-post');
           return reply.view('write-post', {
-            message: 'Ayúdame, oh Dios mío, ¿por qué?',
+            message: 'Ayúdame, oh Dios mío, ¿por qué?'
           });
         }
         reply(res).redirect('/');
       });
-    },
+    }
   });
 
   // Static routes
@@ -138,9 +143,9 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
     path: '/{file*}',
     handler: {
       directory: {
-        path: './public',
-      },
-    },
+        path: './public'
+      }
+    }
 
   });
 });
@@ -151,10 +156,19 @@ const options = {
   password: 'datagangrulesokdatagangrulesokdatagangrulesok',
   cookie: 'pajescookie',
   isSecure: false,
-  ttl: 3 * 60 * 10000,
+  ttl: 3 * 60 * 10000
 };
 
-server.auth.strategy('base', 'cookie', 'optional', options);
+// const strategyOptions = {
+//   key: process.env.SECRET,
+//   validateFunc: validate,
+//   verifyOptions: {
+//     algorithms: [ 'HS256']
+//   }
+// };
+
+// server.auth.strategy('jwt', 'jwt', strategyOptions);
+server.auth.strategy('base', 'cookie', optional , options)
 
 // Start server
 

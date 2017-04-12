@@ -134,6 +134,7 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
           reply.view(index, { message: 'Lo sentimos, actualmente estamos experimentando dificultades con el servidor' });
           return;
         }
+        console.log('res', res);
         reply.view('index', { res });
       });
     }

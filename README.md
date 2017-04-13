@@ -13,10 +13,10 @@ So that I can use my Github organisation's info to see posts from my fellow stud
 
 Acceptance criteria:
 
- - [ ] I can click on a button, which allows me to log in via my Github account
- - [ ] The look of the button should make it obvious that it is this form of login
- - [ ] Once I'm logged in, I should see a list of blog posts
- - [ ] I shouldn't be left with a blank loading screen for too long during the authorisation process, otherwise I will lose confidence in your website and leave.
+ - [x] I can click on a button, which allows me to log in via my Github account
+ - [x] The look of the button should make it obvious that it is this form of login
+ - [x] Once I'm logged in, I should see a list of blog posts
+ - [x] I shouldn't be left with a blank loading screen for too long during the authorisation process, otherwise I will lose confidence in your website and leave.
 
 As any user who is logged in:
 
@@ -25,7 +25,7 @@ So that I benefit from logging in with Github OAuth, and don't have to do any pr
 
 Acceptance criteria:
 
-- [ ] I can see my username & profile picture on each page that I visit
+- [x] I can see my username & profile picture on each page that I visit
 
 
 Stretch goal:

@@ -5,31 +5,27 @@ const data = require('../src/database/getdata.js');
 const routes = [{
   method: 'GET',
   url: '/',
-  expectedStatusCode: 200,
+  expectedStatusCode: 200
 }, {
   method: 'GET',
   url: '/write-post',
-  expectedStatusCode: 200,
+  expectedStatusCode: 200
 }, {
   method: 'GET',
   url: '/logged-in',
-  expectedStatusCode: 302,
+  expectedStatusCode: 302
 }, {
-  method: 'GET',
-  url: '/',
-  expectedStatusCode: 200,
-}, {
-  method: 'GET',
+  method: 'POST',
   url: '/logged-out',
-  expectedStatusCode: 200,
+  expectedStatusCode: 302
 }, {
   method: 'GET',
   url: '/welcome',
-  expectedStatusCode: 302,
+  expectedStatusCode: 302
 }, {
   method: 'POST',
   url: '/submit-post',
-  expectedStatusCode: 200,
+  expectedStatusCode: 200
 }];
 
 
@@ -38,7 +34,7 @@ routes.forEach((route) => {
     const { method, url, expectedStatusCode } = route;
     const options = {
       method,
-      url,
+      url
     };
     server.inject(options, (res) => {
       t.equal(res.statusCode, expectedStatusCode, `Should return statuscode of ${expectedStatusCode}`);
@@ -48,17 +44,4 @@ routes.forEach((route) => {
       t.end();
     });
   });
-});
-
-
-test('Passing test for travis', (t) => {
-  t.equal(1, 1, '1 is equal to 1');
-  t.end();
-});
-
-test('database functions', (t) => {
-  data.getBlogPosts((err, res) => {
-    t.ok(res.length > 1);
-  });
-  t.end();
 });

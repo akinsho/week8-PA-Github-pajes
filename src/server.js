@@ -14,14 +14,14 @@ const port = process.env.PORT || 3005;
 const host = 'localhost';
 
 if (process.env.ENV === 'PROD' || process.env.ENV === 'TEST') {
-server.connection({
-  port,
-  host,
-  tls: {
-    key: fs.readFileSync('./keys/key.pem'),
-    cert: fs.readFileSync('./keys/cert.pem')
-  }
-});
+  server.connection({
+    port,
+    host,
+    tls: {
+      key: fs.readFileSync('./keys/key.pem'),
+      cert: fs.readFileSync('./keys/cert.pem')
+    }
+  });
 } else {
   server.connection({
     port
@@ -40,14 +40,18 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
   });
 
 
+    // redirectTo: '/',
   const options = {
     password: process.env.COOKIE_SECRET,
     cookie: 'github-ap',
     isSecure: false,
-    ttl: 2 * 60 * 1000
+    ttl: 2 * 60 * 1000,
+    redirectOnTry: false,
+    isSameSite: false,
+
   };
 
-  server.auth.strategy('base', 'cookie', 'optional', options);
+  server.auth.strategy('base', 'cookie', 'required', options);
 
 
   server.route(routes);

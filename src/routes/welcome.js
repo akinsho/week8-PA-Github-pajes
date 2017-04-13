@@ -8,6 +8,11 @@ const data = require('../database/getdata.js');
 module.exports = {
   method: 'GET',
   path: '/welcome',
+  config: {
+    auth: {
+      mode: 'try'
+    }
+  },
   handler: (req, reply) => {
     const query = req.url.query;
     const gitHubUrl = `https://github.com/login/oauth/access_token?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&code=${query.code}`;

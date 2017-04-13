@@ -23,5 +23,5 @@ echo "BASE_URL=https://localhost:3000
 CLIENT_ID=$client_id
 CLIENT_SECRET=$client_secret
 SECRET=$secret
-DATABASE=$database_url
+DATABASE_URL=$database_url
 " > config.env

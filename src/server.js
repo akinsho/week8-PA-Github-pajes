@@ -17,14 +17,20 @@ const server = new hapi.Server();
 const port = process.env.PORT || 3005;
 const host = 'localhost';
 
+if (process.env.ENV === 'PROD' || process.env.ENV === 'TEST') {
 server.connection({
   port,
   host,
   tls: {
     key: fs.readFileSync('./keys/key.pem'),
     cert: fs.readFileSync('./keys/cert.pem')
-  },
+  }
 });
+} else {
+  server.connections({
+    port
+  });
+}
 
 server.register([inert, credentials, vision, CookieAuth], (err) => {
   if (err) throw err;

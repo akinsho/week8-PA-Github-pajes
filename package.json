@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js -e 'js, html, css, hbs'",
+    "dev": "ENV=PROD nodemon src/server.js -e 'js, html, css, hbs'",
     "pretest": "ENV=test node database/db_build.js",
     "test": "node tests/tests.js | tap-spec",
     "coverage": "istanbul cover tests/tests.js"
@@ -28,7 +28,6 @@
     "eslint-plugin-import": "^2.2.0",
     "hapi-auth-jwt2": "^7.2.4",
     "istanbul": "^0.4.5",
-    "jsonwebtoken": "^7.3.0",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.3"
   },
@@ -40,6 +39,7 @@
     "hapi-context-credentials": "^2.0.0",
     "inert": "^4.2.0",
     "pg": "^6.1.5",
+    "jsonwebtoken": "^7.3.0",
     "request": "^2.81.0",
     "vision": "^4.1.1"
   }

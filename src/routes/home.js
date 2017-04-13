@@ -4,6 +4,11 @@ const data = require('../database/getdata.js');
 module.exports = {
   method: 'GET',
   path: '/',
+  config: {
+    auth:{
+      mode: 'try'
+    }
+  },
   handler: (request, reply) => {
     data.getBlogPosts((dbErr, res) => {
       if (dbErr) {

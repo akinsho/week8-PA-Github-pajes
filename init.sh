@@ -16,6 +16,10 @@ read client_id
 echo 'Enter client_secret and press [ENTER]'
 read client_secret
 
+echo 'Enter the cookie password and press [ENTER]'
+read cookie_secret
+
+
 echo 'Enter secret (can use anything) and press [ENTER]'
 read secret
 
@@ -24,4 +28,5 @@ CLIENT_ID=$client_id
 CLIENT_SECRET=$client_secret
 SECRET=$secret
 DATABASE_URL=$database_url
+COOKIE_SECRET=$cookie_secret
 " > config.env

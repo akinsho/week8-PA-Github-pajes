@@ -4,9 +4,8 @@
   "description": "A sick blog platform for Spanish people",
   "main": "index.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "ENV=PROD nodemon src/server.js -e 'js, html, css, hbs'",
-    "pretest": "ENV=test node database/db_build.js",
+    "start": "node src/start.js",
+    "dev": "ENV=PROD nodemon src/start.js -e 'js, html, css, hbs'",
     "test": "node tests/tests.js | tap-spec",
     "coverage": "istanbul cover tests/tests.js"
   },

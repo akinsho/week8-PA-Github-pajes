@@ -37,7 +37,6 @@ body {
     align-self: flex-start;
 }
 .header__profile-pic {
-    padding-right: 1rem;
     width: 4rem;
     height: 4rem;
     border-radius: 50%;

@@ -27,7 +27,7 @@ server.connection({
   }
 });
 } else {
-  server.connections({
+  server.connection({
     port
   });
 }

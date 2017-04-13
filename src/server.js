@@ -9,8 +9,6 @@ const postData = require('./database/postdata.js');
 const querystring = require('querystring');
 const request = require('request');
 const fs = require('fs');
-const jwt = require('jsonwebtoken');
-const hapiJwt = require('hapi-auth-jwt2');
 
 const server = new hapi.Server();
 
@@ -185,13 +183,13 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
 
 // Authentication
 
-const options = {
-  password: 'datagangrulesokdatagangrulesokdatagangrulesok',
-  cookie: 'pajescookie',
-  isSecure: false,
-  ttl: 3 * 60 * 10000,
-  isSameSite: false
-};
+// const options = {
+//   password: 'datagangrulesokdatagangrulesokdatagangrulesok',
+//   cookie: 'pajescookie',
+//   isSecure: false,
+//   ttl: 3 * 60 * 10000,
+//   isSameSite: false
+// };
 
 
 // server.auth.strategy('jwt', 'jwt', strategyOptions);

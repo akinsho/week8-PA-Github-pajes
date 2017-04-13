@@ -9,22 +9,26 @@ const postData = require('./database/postdata.js');
 const querystring = require('querystring');
 const request = require('request');
 const fs = require('fs');
-const jwt = require('jsonwebtoken');
-const hapiJwt = require('hapi-auth-jwt2');
 
 const server = new hapi.Server();
 
 const port = process.env.PORT || 3005;
 const host = 'localhost';
 
+if (process.env.ENV === 'PROD' || process.env.ENV === 'TEST') {
 server.connection({
   port,
   host,
   tls: {
     key: fs.readFileSync('./keys/key.pem'),
     cert: fs.readFileSync('./keys/cert.pem')
-  },
+  }
 });
+} else {
+  server.connection({
+    port
+  });
+}
 
 server.register([inert, credentials, vision, CookieAuth], (err) => {
   if (err) throw err;
@@ -179,13 +183,13 @@ server.register([inert, credentials, vision, CookieAuth], (err) => {
 
 // Authentication
 
-const options = {
-  password: 'datagangrulesokdatagangrulesokdatagangrulesok',
-  cookie: 'pajescookie',
-  isSecure: false,
-  ttl: 3 * 60 * 10000,
-  isSameSite: false
-};
+// const options = {
+//   password: 'datagangrulesokdatagangrulesokdatagangrulesok',
+//   cookie: 'pajescookie',
+//   isSecure: false,
+//   ttl: 3 * 60 * 10000,
+//   isSameSite: false
+// };
 
 
 // server.auth.strategy('jwt', 'jwt', strategyOptions);
